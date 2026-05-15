@@ -58,6 +58,7 @@ PKG_CONFIG_PATH=/clangarm64/ffbuild/lib/pkgconfig ./configure --cc=clang \
     --enable-libfontconfig \
     --enable-libharfbuzz \
     --enable-libass \
+    --enable-libdvdnav \
     --enable-libbluray \
     --enable-libmp3lame \
     --enable-libopus \
