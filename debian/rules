@@ -31,6 +31,7 @@ CONFIG := --prefix=${TARGET_DIR} \
 	--enable-libfribidi \
 	--enable-libfontconfig \
 	--enable-libharfbuzz \
+	--enable-libdvdnav \  
 	--enable-libbluray \
 	--enable-libmp3lame \
 	--enable-libopus \
