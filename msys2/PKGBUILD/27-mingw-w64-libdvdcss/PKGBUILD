@@ -1,0 +1,46 @@
+# Maintainer: Alexey Pavlov <alexpux@gmail.com>
+
+_realname=libdvdcss
+pkgbase=mingw-w64-jellyfin-${_realname}
+pkgname="${MINGW_PACKAGE_PREFIX}-jellyfin-${_realname}"
+pkgver=1.5.0
+pkgrel=1
+pkgdesc="Portable abstraction library for DVD decryption (mingw-w64)"
+arch=('any')
+mingw_arch=('mingw32' 'mingw64' 'ucrt64' 'clang64' 'clangarm64')
+url="https://www.videolan.org/developers/libdvdcss.html"
+msys2_repository_url="https://code.videolan.org/videolan/libdvdcss"
+license=('spdx:GPL-2.0-or-later')
+makedepends=(
+  "${MINGW_PACKAGE_PREFIX}-meson"
+  "${MINGW_PACKAGE_PREFIX}-ninja"
+  "${MINGW_PACKAGE_PREFIX}-pkgconf"
+  "${MINGW_PACKAGE_PREFIX}-cc")
+source=(https://code.videolan.org/videolan/libdvdcss/-/archive/${pkgver}/${_realname}-${pkgver}.tar.gz)
+sha256sums=('7c0eb732653eced7d74cb9ad1b9b9b1c6206b0cea73ca596c77372df3e1d9d9f')
+
+export MINGW_TOOLCHAIN_PREFIX="${MINGW_PREFIX}"
+export FF_MINGW_PREFIX="${MINGW_TOOLCHAIN_PREFIX}/ffbuild"
+
+build() {
+  export PKG_CONFIG_PATH="${FF_MINGW_PREFIX}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+
+  MSYS2_ARG_CONV_EXCL="--prefix=" \
+  meson setup \
+    --prefix="${FF_MINGW_PREFIX}" \
+    --wrap-mode=nodownload \
+    --auto-features=enabled \
+    --buildtype=plain \
+    --default-library=static \
+    "build-${MSYSTEM}" \
+    "${_realname}-${pkgver}"
+
+  meson compile -C "build-${MSYSTEM}"
+}
+
+package() {
+  meson install -C "build-${MSYSTEM}" --destdir "${pkgdir}"
+
+  install -Dm644 "${srcdir}/${_realname}-${pkgver}/COPYING" \
+    "${pkgdir}${FF_MINGW_PREFIX}/share/licenses/${_realname}/COPYING"
+}
