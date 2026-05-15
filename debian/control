@@ -16,7 +16,7 @@ Build-Depends:
 # --enable-gnutls
  libgnutls28-dev | libgnutls-dev,
 # --enable-libdvdnav
-  libdvdnav-dev,
+ libdvdnav-dev,
 # --enable-libbluray
  libbluray-dev,
 # --enable-libdrm
